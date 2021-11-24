@@ -8,7 +8,7 @@ class BronzeAccountType implements AccountType {
     }
 
     @Override
-    public int getCreditCost(int credit) {
+    public int getLoanCost(int credit) {
         return (int) (credit * 0.05);
     }
 

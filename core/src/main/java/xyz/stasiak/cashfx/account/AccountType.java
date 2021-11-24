@@ -4,7 +4,7 @@ interface AccountType {
 
     int getWithdrawCost();
 
-    int getCreditCost(int credit);
+    int getLoanCost(int credit);
 
     int getTransferCost();
 
