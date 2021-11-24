@@ -3,18 +3,26 @@ package xyz.stasiak.cashfx.account;
 import xyz.stasiak.cashfx.account.exceptions.NotEnoughMoney;
 
 class Account {
-    private final int id;
     private final String name;
     private final AccountType type;
+    private Integer id;
     private int money;
     private int charge;
 
-    Account(int id, String name, int money, int charge, AccountType type) {
+    Account(Integer id, String name, int money, int charge, AccountType type) {
         this.id = id;
         this.name = name;
         this.money = money;
         this.charge = charge;
         this.type = type;
+    }
+
+    Integer getId() {
+        return id;
+    }
+
+    void setId(Integer id) {
+        this.id = id;
     }
 
     void makeTransfer(int amount, Account to) {
