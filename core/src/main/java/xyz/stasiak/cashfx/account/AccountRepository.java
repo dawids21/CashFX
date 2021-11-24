@@ -8,4 +8,6 @@ interface AccountRepository {
 
     Option<Account> getById(int id);
 
+    Option<AccountReadModel> getReadModelById(int id);
+
 }

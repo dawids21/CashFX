@@ -23,4 +23,9 @@ class InMemoryAccountRepository implements AccountRepository {
     public Option<Account> getById(int id) {
         return accounts.get(id);
     }
+
+    @Override
+    public Option<AccountReadModel> getReadModelById(int id) {
+        return accounts.get(id).map(Account::toReadModel);
+    }
 }
