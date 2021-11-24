@@ -1,20 +1,19 @@
 package xyz.stasiak.cashfx.account;
 
+import io.vavr.collection.HashMap;
+import io.vavr.collection.Map;
 import io.vavr.control.Option;
-
-import java.util.HashMap;
-import java.util.Map;
 
 class InMemoryAccountRepository implements AccountRepository {
 
-    private final Map<Integer, Account> accounts = new HashMap<>();
+    private Map<Integer, Account> accounts = HashMap.empty();
     private int nextId = 1;
 
     @Override
     public Account save(Account account) {
 
         account.setId(nextId);
-        accounts.put(nextId, account);
+        accounts = accounts.put(nextId, account);
         nextId += 1;
         return account;
 
@@ -22,6 +21,6 @@ class InMemoryAccountRepository implements AccountRepository {
 
     @Override
     public Option<Account> getById(int id) {
-        return Option.of(accounts.get(id));
+        return accounts.get(id);
     }
 }
