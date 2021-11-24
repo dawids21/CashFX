@@ -17,10 +17,6 @@ class Account {
         this.type = type;
     }
 
-    Integer getId() {
-        return id;
-    }
-
     void setId(Integer id) {
         this.id = id;
     }
