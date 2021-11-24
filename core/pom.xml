@@ -12,4 +12,12 @@
 
     <artifactId>cashfx-core</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>io.vavr</groupId>
+            <artifactId>vavr</artifactId>
+            <version>0.10.4</version>
+        </dependency>
+    </dependencies>
+
 </project>
