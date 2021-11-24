@@ -1,11 +1,11 @@
 package xyz.stasiak.cashfx.account;
 
+import io.vavr.control.Option;
+
 public interface AccountRepository {
 
     Account save(Account account);
 
-    int count();
-
-    Account getById(int id);
+    Option<Account> getById(int id);
 
 }
