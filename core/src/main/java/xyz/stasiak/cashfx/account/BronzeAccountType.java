@@ -3,6 +3,11 @@ package xyz.stasiak.cashfx.account;
 class BronzeAccountType implements AccountType {
 
     @Override
+    public AccountTypeReadModel toReadModel() {
+        return AccountTypeReadModel.BRONZE;
+    }
+
+    @Override
     public int getWithdrawCost() {
         return 0;
     }

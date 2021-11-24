@@ -3,6 +3,11 @@ package xyz.stasiak.cashfx.account;
 class BasicAccountType implements AccountType {
 
     @Override
+    public AccountTypeReadModel toReadModel() {
+        return AccountTypeReadModel.BASIC;
+    }
+
+    @Override
     public int getWithdrawCost() {
         return 5;
     }

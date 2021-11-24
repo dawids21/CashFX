@@ -68,4 +68,8 @@ class Account {
     void openDeposit(int amount) {
         money += type.getDepositGain(amount);
     }
+
+    AccountReadModel toReadModel() {
+        return new AccountReadModel(id, name, money, charge, type.toReadModel());
+    }
 }

@@ -3,6 +3,11 @@ package xyz.stasiak.cashfx.account;
 class DiamondAccountType implements AccountType {
 
     @Override
+    public AccountTypeReadModel toReadModel() {
+        return AccountTypeReadModel.DIAMOND;
+    }
+
+    @Override
     public int getWithdrawCost() {
         return 0;
     }
