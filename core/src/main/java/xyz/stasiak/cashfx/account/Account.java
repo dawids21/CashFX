@@ -66,6 +66,9 @@ class Account {
     }
 
     void openDeposit(int amount) {
+        if (money < amount) {
+            throw new NotEnoughMoney(name, amount);
+        }
         money += type.getDepositGain(amount);
     }
 

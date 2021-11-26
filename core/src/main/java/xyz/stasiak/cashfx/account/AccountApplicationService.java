@@ -46,4 +46,9 @@ public class AccountApplicationService {
         repository.save(fromAccount);
         repository.save(toAccount);
     }
+
+    public AccountReadModel readAccount(int id) {
+
+        return repository.getReadModelById(id).getOrElseThrow(() -> new AccountNotFound(id));
+    }
 }
