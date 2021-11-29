@@ -46,7 +46,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>xyz.stasiak.cashfxdesktop/xyz.stasiak.cashfx.HelloApplication</mainClass>
+                            <mainClass>xyz.stasiak.cashfxdesktop/xyz.stasiak.cashfx.CashFxApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>

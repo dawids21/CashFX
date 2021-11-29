@@ -11,7 +11,7 @@ import xyz.stasiak.cashfx.user.UserConfig;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class CashFxApplication extends Application {
     public static void main(String[] args) {
         launch();
     }
@@ -21,9 +21,9 @@ public class HelloApplication extends Application {
         ApplicationContext.init(List.of(
                 new AccountConfig(), new UserConfig()
         ));
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(CashFxApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        stage.setTitle("CashFX");
         stage.setScene(scene);
         stage.show();
     }
