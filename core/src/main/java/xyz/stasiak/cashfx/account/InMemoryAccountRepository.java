@@ -1,6 +1,7 @@
 package xyz.stasiak.cashfx.account;
 
 import io.vavr.collection.HashMap;
+import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 
@@ -27,5 +28,13 @@ class InMemoryAccountRepository implements AccountRepository {
     @Override
     public Option<AccountReadModel> getReadModelById(int id) {
         return accounts.get(id).map(Account::toReadModel);
+    }
+
+    @Override
+    public List<AccountReadModel> getReadModelsByUserId(int userId) {
+        return accounts.values()
+                .map(Account::toReadModel)
+                .filter(account -> account.userId() == userId)
+                .toList();
     }
 }
