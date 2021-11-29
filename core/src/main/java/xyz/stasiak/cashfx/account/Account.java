@@ -5,16 +5,18 @@ import xyz.stasiak.cashfx.account.exceptions.NotEnoughMoney;
 class Account {
     private final String name;
     private final AccountType type;
+    private final Integer userId;
     private Integer id;
     private int money;
     private int charge;
 
-    Account(Integer id, String name, int money, int charge, AccountType type) {
+    Account(Integer id, Integer userId, String name, int money, int charge, AccountType type) {
         this.id = id;
         this.name = name;
         this.money = money;
         this.charge = charge;
         this.type = type;
+        this.userId = userId;
     }
 
     void setId(Integer id) {
@@ -73,6 +75,6 @@ class Account {
     }
 
     AccountReadModel toReadModel() {
-        return new AccountReadModel(id, name, money, charge, type.toReadModel());
+        return new AccountReadModel(id, userId, name, money, charge, type.toReadModel());
     }
 }
