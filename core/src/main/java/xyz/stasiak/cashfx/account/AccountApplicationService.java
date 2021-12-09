@@ -12,29 +12,29 @@ public class AccountApplicationService {
         this.factory = factory;
     }
 
-    public Account openBasic(int userId, String name) {
+    public int openBasic(int userId, String name) {
         var account = factory.basic(name, userId);
-        return repository.save(account);
+        return repository.save(account).toReadModel().id();
     }
 
-    public Account openBronze(int userId, String name) {
+    public int openBronze(int userId, String name) {
         var account = factory.bronze(name, userId);
-        return repository.save(account);
+        return repository.save(account).toReadModel().id();
     }
 
-    public Account openSilver(int userId, String name) {
+    public int openSilver(int userId, String name) {
         var account = factory.silver(name, userId);
-        return repository.save(account);
+        return repository.save(account).toReadModel().id();
     }
 
-    public Account openGold(int userId, String name) {
+    public int openGold(int userId, String name) {
         var account = factory.gold(name, userId);
-        return repository.save(account);
+        return repository.save(account).toReadModel().id();
     }
 
-    public Account openDiamond(int userId, String name) {
+    public int openDiamond(int userId, String name) {
         var account = factory.diamond(name, userId);
-        return repository.save(account);
+        return repository.save(account).toReadModel().id();
     }
 
     public void makeTransfer(int from, int to, int amount) {
