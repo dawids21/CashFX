@@ -1,6 +1,7 @@
 package xyz.stasiak.cashfx.user;
 
 import io.vavr.collection.HashMap;
+import io.vavr.collection.List;
 import io.vavr.collection.Map;
 import io.vavr.control.Option;
 
@@ -22,5 +23,10 @@ class InMemoryUserRepository implements UserRepository {
     @Override
     public Option<UserReadModel> getById(int id) {
         return users.get(id).map(User::toReadModel);
+    }
+
+    @Override
+    public List<UserReadModel> getAll() {
+        return users.values().map(User::toReadModel).toList();
     }
 }
