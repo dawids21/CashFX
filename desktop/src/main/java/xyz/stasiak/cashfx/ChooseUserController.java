@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import xyz.stasiak.cashfx.context.ApplicationContext;
@@ -30,7 +31,17 @@ public class ChooseUserController {
     void initialize() {
         var observableList = FXCollections.observableArrayList(service.getAllUsers().toJavaList());
         userList.setItems(observableList);
-        userList.setCellFactory(userReadModelListView -> new UserListCell());
+        userList.setCellFactory(listView -> new ListCell<>() {
+            @Override
+            protected void updateItem(UserReadModel user, boolean empty) {
+                super.updateItem(user, empty);
+                if (empty || user == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%s %s", user.name(), user.surname()));
+                }
+            }
+        });
     }
 
     @FXML
