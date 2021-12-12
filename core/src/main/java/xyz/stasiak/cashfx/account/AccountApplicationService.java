@@ -1,5 +1,6 @@
 package xyz.stasiak.cashfx.account;
 
+import io.vavr.collection.List;
 import xyz.stasiak.cashfx.account.exceptions.AccountNotFound;
 
 public class AccountApplicationService {
@@ -50,5 +51,9 @@ public class AccountApplicationService {
     public AccountReadModel readAccount(int id) {
 
         return repository.getReadModelById(id).getOrElseThrow(() -> new AccountNotFound(id));
+    }
+
+    public List<AccountReadModel> getUserAccounts(int userId) {
+        return repository.getReadModelsByUserId(userId);
     }
 }
