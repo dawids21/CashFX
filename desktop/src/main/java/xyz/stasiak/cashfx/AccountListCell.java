@@ -5,22 +5,26 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
-import xyz.stasiak.cashfx.user.UserReadModel;
+import xyz.stasiak.cashfx.account.AccountReadModel;
 
 import java.io.IOException;
 
-public class UserListCell extends ListCell<UserReadModel> {
+public class AccountListCell extends ListCell<AccountReadModel> {
 
     @FXML
-    private Label username;
+    private Label name;
+    @FXML
+    private Label money;
+    @FXML
+    private Label type;
 
-    public UserListCell() {
+    public AccountListCell() {
         loadFXML();
     }
 
     private void loadFXML() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("user-list-cell.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("account-list-cell.fxml"));
             loader.setController(this);
             loader.setRoot(this);
             loader.load();
@@ -30,14 +34,16 @@ public class UserListCell extends ListCell<UserReadModel> {
     }
 
     @Override
-    protected void updateItem(UserReadModel user, boolean empty) {
-        super.updateItem(user, empty);
+    protected void updateItem(AccountReadModel account, boolean empty) {
+        super.updateItem(account, empty);
 
-        if (empty || user == null) {
+        if (empty || account == null) {
             setText(null);
             setContentDisplay(ContentDisplay.TEXT_ONLY);
         } else {
-            username.setText(String.format("%s %s", user.name(), user.surname()));
+            name.setText(account.name());
+            money.setText(String.format("%d", account.money()));
+            type.setText(account.type().name());
             setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
         }
     }
