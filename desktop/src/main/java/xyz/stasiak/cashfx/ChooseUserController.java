@@ -1,7 +1,6 @@
 package xyz.stasiak.cashfx;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -17,7 +16,6 @@ import java.io.IOException;
 
 public class ChooseUserController {
 
-    private final ObservableList<UserReadModel> observableList = FXCollections.observableArrayList();
     private final UserApplicationService service;
     private final ApplicationState applicationState;
     @FXML
@@ -30,7 +28,7 @@ public class ChooseUserController {
 
     @FXML
     void initialize() {
-        observableList.addAll(service.getAllUsers().toJavaList());
+        var observableList = FXCollections.observableArrayList(service.getAllUsers().toJavaList());
         userList.setItems(observableList);
         userList.setCellFactory(userReadModelListView -> new UserListCell());
     }
