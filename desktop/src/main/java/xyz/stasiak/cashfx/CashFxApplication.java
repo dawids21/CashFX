@@ -21,14 +21,14 @@ public class CashFxApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         ApplicationContext.init(List.of(
-                new AccountConfig(), new UserConfig()
+                new AccountConfig(), new UserConfig(), new ApplicationConfig()
         ));
         var userApplicationService = ApplicationContext.CONTEXT.getBean(UserApplicationService.class);
         var accountApplicationService = ApplicationContext.CONTEXT.getBean(AccountApplicationService.class);
         var userId = userApplicationService.create("Dawid", "Stasiak");
         var account = accountApplicationService.openBasic(userId, "Basic");
 
-        FXMLLoader fxmlLoader = new FXMLLoader(CashFxApplication.class.getResource("cash-fx-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(CashFxApplication.class.getResource("choose-user-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("CashFX");
         stage.setScene(scene);
