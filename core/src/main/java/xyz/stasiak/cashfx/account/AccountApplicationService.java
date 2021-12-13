@@ -39,13 +39,43 @@ public class AccountApplicationService {
     }
 
     public void makeTransfer(int from, int to, int amount) {
-        var fromAccount = repository.getById(from).getOrElseThrow(() -> new AccountNotFound(from));
-        var toAccount = repository.getById(to).getOrElseThrow(() -> new AccountNotFound(to));
+        var fromAccount = getAccount(from);
+        var toAccount = getAccount(to);
 
         fromAccount.makeTransfer(amount, toAccount);
 
         repository.save(fromAccount);
         repository.save(toAccount);
+    }
+
+    public void payCharge(int accountId) {
+        var account = getAccount(accountId);
+        account.payCharge();
+        repository.save(account);
+    }
+
+    public void takeLoad(int accountId, int amount) {
+        var account = getAccount(accountId);
+        account.takeLoan(amount);
+        repository.save(account);
+    }
+
+    public void withdraw(int accountId, int amount) {
+        var account = getAccount(accountId);
+        account.withdraw(amount);
+        repository.save(account);
+    }
+
+    public void deposit(int accountId, int amount) {
+        var account = getAccount(accountId);
+        account.deposit(amount);
+        repository.save(account);
+    }
+
+    public void openDeposit(int accountId, int amount) {
+        var account = getAccount(accountId);
+        account.openDeposit(amount);
+        repository.save(account);
     }
 
     public AccountReadModel readAccount(int id) {
@@ -55,5 +85,9 @@ public class AccountApplicationService {
 
     public List<AccountReadModel> getUserAccounts(int userId) {
         return repository.getReadModelsByUserId(userId);
+    }
+
+    private Account getAccount(int accountId) {
+        return repository.getById(accountId).getOrElseThrow(() -> new AccountNotFound(accountId));
     }
 }
