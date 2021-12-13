@@ -2,12 +2,19 @@ package xyz.stasiak.cashfx;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.stage.Stage;
 import xyz.stasiak.cashfx.account.AccountApplicationService;
 import xyz.stasiak.cashfx.account.AccountReadModel;
 import xyz.stasiak.cashfx.context.ApplicationContext;
+
+import java.io.IOException;
 
 public class ChooseAccountController {
     private final AccountApplicationService service;
@@ -37,4 +44,13 @@ public class ChooseAccountController {
         typeTableColumn.setCellValueFactory(cellDataFeatures -> new SimpleStringProperty(cellDataFeatures.getValue().type().name()));
     }
 
+    @FXML
+    void onChooseAccountButtonAction(ActionEvent event) throws IOException {
+        var accountId = accountsTable.getSelectionModel().getSelectedItem().id();
+        applicationState.setAccountId(accountId);
+        var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        var fxmlLoader = new FXMLLoader(getClass().getResource("account-details-view.fxml"));
+        var scene = new Scene(fxmlLoader.load(), 600, 400);
+        stage.setScene(scene);
+    }
 }
