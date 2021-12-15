@@ -13,4 +13,6 @@ interface AccountRepository {
 
     List<AccountReadModel> getReadModelsByUserId(int userId);
 
+    List<AccountNameReadModel> getNameReadModels();
+
 }

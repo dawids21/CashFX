@@ -37,4 +37,11 @@ class InMemoryAccountRepository implements AccountRepository {
                 .filter(account -> account.userId() == userId)
                 .toList();
     }
+
+    @Override
+    public List<AccountNameReadModel> getNameReadModels() {
+        return accounts.values()
+                .map(Account::toNameReadModel)
+                .toList();
+    }
 }

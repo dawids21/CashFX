@@ -87,6 +87,10 @@ public class AccountApplicationService {
         return repository.getReadModelsByUserId(userId);
     }
 
+    public List<AccountNameReadModel> readAccountNames() {
+        return repository.getNameReadModels();
+    }
+
     private Account getAccount(int accountId) {
         return repository.getById(accountId).getOrElseThrow(() -> new AccountNotFound(accountId));
     }

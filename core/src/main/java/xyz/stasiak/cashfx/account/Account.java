@@ -77,4 +77,8 @@ class Account {
     AccountReadModel toReadModel() {
         return new AccountReadModel(id, userId, name, money, charge, type.toReadModel());
     }
+
+    AccountNameReadModel toNameReadModel() {
+        return new AccountNameReadModel(id, userId, name);
+    }
 }
