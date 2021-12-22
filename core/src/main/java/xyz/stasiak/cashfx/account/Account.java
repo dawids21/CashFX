@@ -19,6 +19,10 @@ class Account {
         this.userId = userId;
     }
 
+    Integer getId() {
+        return id;
+    }
+
     void setId(Integer id) {
         this.id = id;
     }

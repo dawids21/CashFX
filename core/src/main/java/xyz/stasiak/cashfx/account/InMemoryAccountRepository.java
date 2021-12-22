@@ -13,6 +13,10 @@ class InMemoryAccountRepository implements AccountRepository {
     @Override
     public Account save(Account account) {
 
+        if (account.getId() != null) {
+            accounts.put(account.getId(), account);
+            return account;
+        }
         account.setId(nextId);
         accounts = accounts.put(nextId, account);
         nextId += 1;
