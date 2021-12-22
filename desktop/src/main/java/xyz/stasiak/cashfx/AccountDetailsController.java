@@ -63,8 +63,22 @@ public class AccountDetailsController {
     }
 
     @FXML
-    void onChangeAccountButtonAction() {
-
+    void onChangeAccountButtonAction(ActionEvent event) throws IOException {
+        var alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Change account");
+        alert.setHeaderText("Change account");
+        alert.setContentText("Do you want to change account?");
+        var result = alert.showAndWait();
+        if (result.isPresent()) {
+            if (result.get() != ButtonType.OK) {
+                return;
+            }
+            applicationState.setAccountId(null);
+            var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            stage.setScene(scene);
+        }
     }
 
     @FXML
