@@ -1,6 +1,7 @@
 package xyz.stasiak.cashfx;
 
 import io.vavr.Tuple;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import xyz.stasiak.cashfx.account.AccountApplicationService;
 import xyz.stasiak.cashfx.context.ApplicationContext;
@@ -127,7 +129,19 @@ public class AccountDetailsController {
 
     @FXML
     void onDepositButtonAction() {
-
+        var dialog = new TextInputDialog("0");
+        dialog.setTitle("Deposit money");
+        dialog.setHeaderText("Deposit money");
+        dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                ((StringProperty) observable).setValue(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        dialog.showAndWait().ifPresent(amountString -> {
+            var amount = Integer.parseInt(amountString);
+            accountApplicationService.deposit(applicationState.getAccountId(), amount);
+            refreshAccount();
+        });
     }
 
     @FXML
