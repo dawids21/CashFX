@@ -88,7 +88,17 @@ public class AccountDetailsController {
 
     @FXML
     void onPayChargeButtonAction() {
-
+        var alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Pay charges");
+        alert.setHeaderText("Pay charges");
+        alert.setContentText("Do you want to pay your charges?");
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType != ButtonType.OK) {
+                return;
+            }
+            accountApplicationService.payCharge(applicationState.getAccountId());
+            refreshAccount();
+        });
     }
 
     @FXML
