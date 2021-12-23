@@ -29,4 +29,9 @@ class InMemoryUserRepository implements UserRepository {
     public List<UserReadModel> getAll() {
         return users.values().map(User::toReadModel).toList();
     }
+
+    @Override
+    public Option<User> getEntityById(int id) {
+        return users.get(id);
+    }
 }

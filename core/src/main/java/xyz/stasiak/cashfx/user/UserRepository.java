@@ -11,4 +11,6 @@ interface UserRepository {
 
     User save(User user);
 
+    Option<User> getEntityById(int id);
+
 }

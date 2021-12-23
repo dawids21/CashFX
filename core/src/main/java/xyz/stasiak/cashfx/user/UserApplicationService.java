@@ -2,6 +2,7 @@ package xyz.stasiak.cashfx.user;
 
 import io.vavr.collection.List;
 import xyz.stasiak.cashfx.user.exception.UserNotFound;
+import xyz.stasiak.cashfx.user.exception.UserPasswordIncorrect;
 
 public class UserApplicationService {
 
@@ -26,4 +27,13 @@ public class UserApplicationService {
         return repository.getAll();
     }
 
+    void login(int userId, String password) {
+
+        var user = repository.getEntityById(userId).getOrElseThrow(() -> new UserNotFound(userId));
+
+        if (!user.isPasswordEqual(password)) {
+            throw new UserPasswordIncorrect(user.toReadModel().name());
+        }
+
+    }
 }
