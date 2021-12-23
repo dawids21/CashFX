@@ -91,7 +91,7 @@ public class AccountDetailsController {
                 .map(account -> new AccountAmountDialog.UserAccountData(account.id(), account.name(), usernames.get(account.userId()).getOrElse("")))
                 .toJavaList();
         var dialog = new AccountAmountDialog();
-        dialog.setTitle("Transfer money");
+        dialog.setTitle("Transfer");
         dialog.setHeaderText("Transfer money");
         dialog.setAccounts(accountNameReadModels);
         dialog.showAndWait().ifPresent(tuple -> {
@@ -124,13 +124,25 @@ public class AccountDetailsController {
 
     @FXML
     void onWithdrawButtonAction() {
-
+        var dialog = new TextInputDialog("0");
+        dialog.setTitle("Withdraw");
+        dialog.setHeaderText("Withdraw money");
+        dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                ((StringProperty) observable).setValue(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        dialog.showAndWait().ifPresent(amountString -> {
+            var amount = Integer.parseInt(amountString);
+            accountApplicationService.withdraw(applicationState.getAccountId(), amount);
+            refreshAccount();
+        });
     }
 
     @FXML
     void onDepositButtonAction() {
         var dialog = new TextInputDialog("0");
-        dialog.setTitle("Deposit money");
+        dialog.setTitle("Deposit");
         dialog.setHeaderText("Deposit money");
         dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
