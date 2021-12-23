@@ -85,7 +85,7 @@ public class AccountDetailsController {
 
     @FXML
     void onTransferButtonAction() throws IOException {
-        var usernames = userApplicationService.getAllUsers().toMap(user -> Tuple.of(user.id(), String.format("%s %s", user.name(), user.surname())));
+        var usernames = userApplicationService.getAllUsers().toMap(user -> Tuple.of(user.id(), user.name()));
         var accountNameReadModels = accountApplicationService.readAccountNames()
                 .filter(account -> account.id() != applicationState.getAccountId())
                 .map(account -> new AccountAmountDialog.UserAccountData(account.id(), account.name(), usernames.get(account.userId()).getOrElse("")))

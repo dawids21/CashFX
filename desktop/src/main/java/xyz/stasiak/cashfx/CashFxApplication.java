@@ -25,10 +25,10 @@ public class CashFxApplication extends Application {
         ));
         var userApplicationService = ApplicationContext.CONTEXT.getBean(UserApplicationService.class);
         var accountApplicationService = ApplicationContext.CONTEXT.getBean(AccountApplicationService.class);
-        var userId = userApplicationService.create("Dawid", "Stasiak");
+        var userId = userApplicationService.create("Dawid Stasiak");
         var basic = accountApplicationService.openBasic(userId, "Basic");
         accountApplicationService.deposit(basic, 100);
-        userId = userApplicationService.create("Jan", "Nowak");
+        userId = userApplicationService.create("Jan Nowak");
         accountApplicationService.openSilver(userId, "Silver");
 
         FXMLLoader fxmlLoader = new FXMLLoader(CashFxApplication.class.getResource("choose-user-view.fxml"));

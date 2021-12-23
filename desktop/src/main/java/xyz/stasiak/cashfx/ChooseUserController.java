@@ -38,7 +38,7 @@ public class ChooseUserController {
                 if (empty || user == null) {
                     setText(null);
                 } else {
-                    setText(String.format("%s %s", user.name(), user.surname()));
+                    setText(user.name());
                 }
             }
         });
