@@ -11,8 +11,8 @@ public class UserApplicationService {
         this.repository = repository;
     }
 
-    public int create(String name) {
-        var user = User.create(name);
+    public int create(String name, String password) {
+        var user = User.create(name, password);
 
         return repository.save(user).toReadModel().id();
     }
