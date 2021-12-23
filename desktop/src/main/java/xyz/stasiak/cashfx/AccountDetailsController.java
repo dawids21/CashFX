@@ -119,19 +119,17 @@ public class AccountDetailsController {
 
     @FXML
     void onTakeLoanButtonAction() {
-
+        var dialog = getTextInputDialog("Take loan", "Take loan");
+        dialog.showAndWait().ifPresent(amountString -> {
+            var amount = Integer.parseInt(amountString);
+            accountApplicationService.takeLoad(applicationState.getAccountId(), amount);
+            refreshAccount();
+        });
     }
 
     @FXML
     void onWithdrawButtonAction() {
-        var dialog = new TextInputDialog("0");
-        dialog.setTitle("Withdraw");
-        dialog.setHeaderText("Withdraw money");
-        dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                ((StringProperty) observable).setValue(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+        var dialog = getTextInputDialog("Withdraw", "Withdraw money");
         dialog.showAndWait().ifPresent(amountString -> {
             var amount = Integer.parseInt(amountString);
             accountApplicationService.withdraw(applicationState.getAccountId(), amount);
@@ -141,14 +139,7 @@ public class AccountDetailsController {
 
     @FXML
     void onDepositButtonAction() {
-        var dialog = new TextInputDialog("0");
-        dialog.setTitle("Deposit");
-        dialog.setHeaderText("Deposit money");
-        dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                ((StringProperty) observable).setValue(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
+        var dialog = getTextInputDialog("Deposit", "Deposit money");
         dialog.showAndWait().ifPresent(amountString -> {
             var amount = Integer.parseInt(amountString);
             accountApplicationService.deposit(applicationState.getAccountId(), amount);
@@ -158,7 +149,25 @@ public class AccountDetailsController {
 
     @FXML
     void onOpenDepositButtonAction() {
+        var dialog = getTextInputDialog("Open deposit", "Open deposit");
+        dialog.showAndWait().ifPresent(amountString -> {
+            var amount = Integer.parseInt(amountString);
+            accountApplicationService.openDeposit(applicationState.getAccountId(), amount);
+            refreshAccount();
+        });
+    }
 
+    private TextInputDialog getTextInputDialog(String title, String header) {
+        var dialog = new TextInputDialog("0");
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText("Amount:");
+        dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                ((StringProperty) observable).setValue(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        return dialog;
     }
 
     private void refreshAccount() {
