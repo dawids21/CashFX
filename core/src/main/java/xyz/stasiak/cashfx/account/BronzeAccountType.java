@@ -19,7 +19,7 @@ class BronzeAccountType implements AccountType {
 
     @Override
     public int getTransferCost() {
-        return 0;
+        return 10;
     }
 
     @Override
