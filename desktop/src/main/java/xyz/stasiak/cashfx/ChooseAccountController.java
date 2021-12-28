@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
@@ -56,5 +58,25 @@ public class ChooseAccountController {
         var fxmlLoader = new FXMLLoader(getClass().getResource("account-details-view.fxml"));
         var scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setScene(scene);
+    }
+
+    @FXML
+    void onLogoutButtonAction(ActionEvent event) throws IOException {
+        var alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("Logout");
+        alert.setContentText("Do you want to log out?");
+        var result = alert.showAndWait();
+        if (result.isPresent()) {
+            if (result.get() != ButtonType.OK) {
+                return;
+            }
+            applicationState.setAccountId(null);
+            applicationState.setUserId(null);
+            var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            var fxmlLoader = new FXMLLoader(getClass().getResource("choose-user-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            stage.setScene(scene);
+        }
     }
 }

@@ -23,7 +23,8 @@
             <TableColumn fx:id="typeTableColumn" prefWidth="75.0" text="Type" />
         </columns>
     </TableView>
-    <HBox alignment="CENTER" prefHeight="119.0" prefWidth="600.0" GridPane.rowIndex="1">
+    <HBox alignment="CENTER" prefHeight="119.0" prefWidth="600.0" spacing="10.0" GridPane.rowIndex="1">
         <Button mnemonicParsing="false" onAction="#onChooseAccountButtonAction" text="Choose account" />
+      <Button mnemonicParsing="false" onAction="#onLogoutButtonAction" text="Logout" />
     </HBox>
 </GridPane>
