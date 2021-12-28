@@ -27,7 +27,7 @@ public class UserApplicationService {
         return repository.getAll();
     }
 
-    void login(int userId, String password) {
+    public void login(int userId, String password) {
 
         var user = repository.getEntityById(userId).getOrElseThrow(() -> new UserNotFound(userId));
 

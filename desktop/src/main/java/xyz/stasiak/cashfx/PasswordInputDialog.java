@@ -18,8 +18,7 @@ public class PasswordInputDialog extends Dialog<String> {
     private PasswordField passwordField;
 
     public PasswordInputDialog() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("password-input-dialog.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("password-input-dialog.fxml"));
         loader.setController(this);
 
         DialogPane dialogPane = loader.load();

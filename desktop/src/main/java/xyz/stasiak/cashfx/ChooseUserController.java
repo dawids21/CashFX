@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import xyz.stasiak.cashfx.context.ApplicationContext;
 import xyz.stasiak.cashfx.user.UserApplicationService;
 import xyz.stasiak.cashfx.user.UserReadModel;
+import xyz.stasiak.cashfx.user.exception.UserPasswordIncorrect;
 
 import java.io.IOException;
 
@@ -47,6 +48,20 @@ public class ChooseUserController {
     @FXML
     void onLoginButtonAction(ActionEvent event) throws IOException {
         var userId = userList.getSelectionModel().getSelectedItem().id();
+
+        var dialog = new PasswordInputDialog();
+        dialog.setTitle("Login");
+        dialog.setHeaderText("Login");
+        dialog.setContentText("Password: ");
+        var password = dialog.showAndWait();
+        if (password.isPresent()) {
+            try {
+                service.login(userId, password.get());
+            } catch (UserPasswordIncorrect passwordIncorrect) {
+                passwordIncorrect.printStackTrace();
+                return;
+            }
+        }
         applicationState.setUserId(userId);
         var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
