@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
@@ -58,7 +59,11 @@ public class ChooseUserController {
             try {
                 service.login(userId, password.get());
             } catch (UserPasswordIncorrect passwordIncorrect) {
-                passwordIncorrect.printStackTrace();
+                var alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Login");
+                alert.setHeaderText("Invalid password");
+                alert.setContentText(passwordIncorrect.getMessage());
+                alert.show();
                 return;
             }
         }
