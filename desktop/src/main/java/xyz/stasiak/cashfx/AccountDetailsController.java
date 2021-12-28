@@ -185,6 +185,12 @@ public class AccountDetailsController {
         });
     }
 
+    @FXML
+    void onInformationButtonAction() throws IOException {
+        var dialog = new AccountTypeInfoDialog(accountApplicationService.readAccount(applicationState.getAccountId()).type());
+        dialog.show();
+    }
+
     private TextInputDialog getTextInputDialog(String title, String header) {
         var dialog = new TextInputDialog("0");
         dialog.setTitle(title);
