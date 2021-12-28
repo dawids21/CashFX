@@ -1,6 +1,7 @@
 package xyz.stasiak.cashfx;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,6 +22,7 @@ public class ChooseUserController {
 
     private final UserApplicationService service;
     private final ApplicationState applicationState;
+    private final ObservableList<UserReadModel> observableUserList = FXCollections.observableArrayList();
     @FXML
     private ListView<UserReadModel> userList;
 
@@ -31,8 +33,8 @@ public class ChooseUserController {
 
     @FXML
     void initialize() {
-        var observableList = FXCollections.observableArrayList(service.getAllUsers().toJavaList());
-        userList.setItems(observableList);
+        observableUserList.addAll(service.getAllUsers().toJavaList());
+        userList.setItems(observableUserList);
         userList.setCellFactory(listView -> new ListCell<>() {
             @Override
             protected void updateItem(UserReadModel user, boolean empty) {
@@ -73,6 +75,17 @@ public class ChooseUserController {
                 alert.setContentText(passwordIncorrect.getMessage());
                 alert.show();
             }
+        }
+    }
+
+    @FXML
+    void onCreateUserButtonAction() throws IOException {
+        var dialog = new CreateUserDialog();
+        dialog.setTitle("Create user");
+        var newUser = dialog.showAndWait();
+        if (newUser.isPresent()) {
+            var userId = service.create(newUser.get().name(), newUser.get().password());
+            observableUserList.add(service.getById(userId));
         }
     }
 }
