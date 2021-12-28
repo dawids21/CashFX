@@ -4,6 +4,7 @@ import io.vavr.Tuple;
 import io.vavr.Tuple2;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -46,6 +47,11 @@ public class AccountAmountDialog extends Dialog<Tuple2<AccountAmountDialog.UserA
         });
 
         setOnShowing(dialogEvent -> Platform.runLater(() -> amount.requestFocus()));
+        dialogPane.lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+            if (!isValid()) {
+                event.consume();
+            }
+        });
 
         amount.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -57,6 +63,10 @@ public class AccountAmountDialog extends Dialog<Tuple2<AccountAmountDialog.UserA
     void setAccounts(List<UserAccountData> accounts) {
         var list = FXCollections.observableArrayList(accounts);
         account.setItems(list);
+    }
+
+    private boolean isValid() {
+        return account.getSelectionModel().getSelectedItem() != null && !"".equals(amount.getText());
     }
 
     record UserAccountData(int accountId, String accountName, String username) {

@@ -131,9 +131,6 @@ public class AccountDetailsController {
     void onTakeLoanButtonAction() {
         var dialog = getTextInputDialog("Take loan", "Take loan");
         dialog.showAndWait().ifPresent(amountString -> {
-            if ("".equals(amountString)) {
-                return;
-            }
             var amount = Integer.parseInt(amountString);
             accountApplicationService.takeLoan(applicationState.getAccountId(), amount);
             refreshAccount();
@@ -144,9 +141,6 @@ public class AccountDetailsController {
     void onWithdrawButtonAction() {
         var dialog = getTextInputDialog("Withdraw", "Withdraw money");
         dialog.showAndWait().ifPresent(amountString -> {
-            if ("".equals(amountString)) {
-                return;
-            }
             var amount = Integer.parseInt(amountString);
             try {
                 accountApplicationService.withdraw(applicationState.getAccountId(), amount);
@@ -166,9 +160,6 @@ public class AccountDetailsController {
     void onDepositButtonAction() {
         var dialog = getTextInputDialog("Deposit", "Deposit money");
         dialog.showAndWait().ifPresent(amountString -> {
-            if ("".equals(amountString)) {
-                return;
-            }
             var amount = Integer.parseInt(amountString);
             accountApplicationService.deposit(applicationState.getAccountId(), amount);
             refreshAccount();
@@ -179,9 +170,6 @@ public class AccountDetailsController {
     void onOpenDepositButtonAction() {
         var dialog = getTextInputDialog("Open deposit", "Open deposit");
         dialog.showAndWait().ifPresent(amountString -> {
-            if ("".equals(amountString)) {
-                return;
-            }
             var amount = Integer.parseInt(amountString);
             try {
                 accountApplicationService.openDeposit(applicationState.getAccountId(), amount);
@@ -205,6 +193,11 @@ public class AccountDetailsController {
         dialog.getEditor().textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 ((StringProperty) observable).setValue(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        dialog.getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+            if ("".equals(dialog.getEditor().getText())) {
+                event.consume();
             }
         });
         return dialog;

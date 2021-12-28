@@ -61,20 +61,18 @@ public class ChooseUserController {
         if (password.isPresent()) {
             try {
                 service.login(userId, password.get());
+                applicationState.setUserId(userId);
+                var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
+                var scene = new Scene(fxmlLoader.load(), 320, 240);
+                stage.setScene(scene);
             } catch (UserPasswordIncorrect passwordIncorrect) {
                 var alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Login");
                 alert.setHeaderText("Invalid password");
                 alert.setContentText(passwordIncorrect.getMessage());
                 alert.show();
-                return;
             }
         }
-        applicationState.setUserId(userId);
-        var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
-        var scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setScene(scene);
     }
-
 }

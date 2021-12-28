@@ -10,13 +10,19 @@ import javafx.stage.Modality;
 import java.io.IOException;
 import java.util.Objects;
 
-public class PasswordInputDialog extends Dialog<String> {
+public class CreateUserDialog extends Dialog<CreateUserDialog.NewUserData> {
+
+    @FXML
+    private TextField nameField;
 
     @FXML
     private PasswordField passwordField;
 
-    public PasswordInputDialog() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("password-input-dialog.fxml"));
+    @FXML
+    private PasswordField confirmPasswordField;
+
+    public CreateUserDialog() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("create-user-dialog.fxml"));
         loader.setController(this);
 
         DialogPane dialogPane = loader.load();
@@ -31,18 +37,22 @@ public class PasswordInputDialog extends Dialog<String> {
                 return null;
             }
 
-            return passwordField.getText();
+            return new NewUserData(nameField.getText(), passwordField.getText());
         });
 
-        setOnShowing(dialogEvent -> Platform.runLater(() -> passwordField.requestFocus()));
         dialogPane.lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
             if (!isValid()) {
                 event.consume();
             }
         });
+        setOnShowing(dialogEvent -> Platform.runLater(() -> passwordField.requestFocus()));
     }
 
     private boolean isValid() {
-        return !"".equals(passwordField.getText());
+        return !"".equals(nameField.getText()) && !"".equals(passwordField.getText()) && !"".equals(confirmPasswordField.getText()) && passwordField.getText().equals(confirmPasswordField.getText());
     }
+
+    record NewUserData(String name, String password) {
+    }
+
 }
