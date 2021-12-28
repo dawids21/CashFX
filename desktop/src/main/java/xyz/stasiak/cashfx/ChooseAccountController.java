@@ -46,6 +46,10 @@ public class ChooseAccountController {
 
     @FXML
     void onChooseAccountButtonAction(ActionEvent event) throws IOException {
+        if (accountsTable.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+
         var accountId = accountsTable.getSelectionModel().getSelectedItem().id();
         applicationState.setAccountId(accountId);
         var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();

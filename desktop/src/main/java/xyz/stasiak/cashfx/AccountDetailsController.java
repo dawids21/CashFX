@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import xyz.stasiak.cashfx.account.AccountApplicationService;
+import xyz.stasiak.cashfx.account.exceptions.NotEnoughMoney;
 import xyz.stasiak.cashfx.context.ApplicationContext;
 import xyz.stasiak.cashfx.user.UserApplicationService;
 
@@ -97,7 +98,16 @@ public class AccountDetailsController {
         dialog.showAndWait().ifPresent(tuple -> {
             var accountId = tuple._1.accountId();
             var amount = tuple._2;
-            accountApplicationService.makeTransfer(applicationState.getAccountId(), accountId, amount);
+            try {
+                accountApplicationService.makeTransfer(applicationState.getAccountId(), accountId, amount);
+            } catch (NotEnoughMoney notEnoughMoney) {
+                var alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Transfer");
+                alert.setHeaderText("Not enough money");
+                alert.setContentText(notEnoughMoney.getMessage());
+                alert.show();
+                return;
+            }
             refreshAccount();
         });
     }
@@ -121,8 +131,11 @@ public class AccountDetailsController {
     void onTakeLoanButtonAction() {
         var dialog = getTextInputDialog("Take loan", "Take loan");
         dialog.showAndWait().ifPresent(amountString -> {
+            if ("".equals(amountString)) {
+                return;
+            }
             var amount = Integer.parseInt(amountString);
-            accountApplicationService.takeLoad(applicationState.getAccountId(), amount);
+            accountApplicationService.takeLoan(applicationState.getAccountId(), amount);
             refreshAccount();
         });
     }
@@ -131,8 +144,20 @@ public class AccountDetailsController {
     void onWithdrawButtonAction() {
         var dialog = getTextInputDialog("Withdraw", "Withdraw money");
         dialog.showAndWait().ifPresent(amountString -> {
+            if ("".equals(amountString)) {
+                return;
+            }
             var amount = Integer.parseInt(amountString);
-            accountApplicationService.withdraw(applicationState.getAccountId(), amount);
+            try {
+                accountApplicationService.withdraw(applicationState.getAccountId(), amount);
+            } catch (NotEnoughMoney notEnoughMoney) {
+                var alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Withdraw");
+                alert.setHeaderText("Not enough money");
+                alert.setContentText(notEnoughMoney.getMessage());
+                alert.show();
+                return;
+            }
             refreshAccount();
         });
     }
@@ -141,6 +166,9 @@ public class AccountDetailsController {
     void onDepositButtonAction() {
         var dialog = getTextInputDialog("Deposit", "Deposit money");
         dialog.showAndWait().ifPresent(amountString -> {
+            if ("".equals(amountString)) {
+                return;
+            }
             var amount = Integer.parseInt(amountString);
             accountApplicationService.deposit(applicationState.getAccountId(), amount);
             refreshAccount();
@@ -151,8 +179,20 @@ public class AccountDetailsController {
     void onOpenDepositButtonAction() {
         var dialog = getTextInputDialog("Open deposit", "Open deposit");
         dialog.showAndWait().ifPresent(amountString -> {
+            if ("".equals(amountString)) {
+                return;
+            }
             var amount = Integer.parseInt(amountString);
-            accountApplicationService.openDeposit(applicationState.getAccountId(), amount);
+            try {
+                accountApplicationService.openDeposit(applicationState.getAccountId(), amount);
+            } catch (NotEnoughMoney notEnoughMoney) {
+                var alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Open deposit");
+                alert.setHeaderText("Not enough money");
+                alert.setContentText(notEnoughMoney.getMessage());
+                alert.show();
+                return;
+            }
             refreshAccount();
         });
     }

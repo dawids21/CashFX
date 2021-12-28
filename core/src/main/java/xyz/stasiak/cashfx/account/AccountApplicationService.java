@@ -54,7 +54,7 @@ public class AccountApplicationService {
         repository.save(account);
     }
 
-    public void takeLoad(int accountId, int amount) {
+    public void takeLoan(int accountId, int amount) {
         var account = getAccount(accountId);
         account.takeLoan(amount);
         repository.save(account);

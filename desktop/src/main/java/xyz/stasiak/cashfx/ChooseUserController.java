@@ -48,6 +48,9 @@ public class ChooseUserController {
 
     @FXML
     void onLoginButtonAction(ActionEvent event) throws IOException {
+        if (userList.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
         var userId = userList.getSelectionModel().getSelectedItem().id();
 
         var dialog = new PasswordInputDialog();

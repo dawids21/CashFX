@@ -38,6 +38,10 @@ public class AccountAmountDialog extends Dialog<Tuple2<AccountAmountDialog.UserA
                 return null;
             }
 
+            if (account.getValue() == null || amount.getText() == null || "".equals(amount.getText())) {
+                return null;
+            }
+
             return Tuple.of(account.getValue(), Integer.parseInt(amount.getText()));
         });
 
