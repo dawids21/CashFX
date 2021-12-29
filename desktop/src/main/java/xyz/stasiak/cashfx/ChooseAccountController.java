@@ -105,6 +105,31 @@ public class ChooseAccountController {
 
     @FXML
     void onDeleteButtonAction() {
+        if (accountsTable.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
 
+        var account = accountsTable.getSelectionModel().getSelectedItem();
+
+        if (account.money() != 0 || account.charge() != 0) {
+            var alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Delete account");
+            alert.setHeaderText("Delete account");
+            alert.setContentText("You can't delete account with money or charges!");
+            alert.show();
+            return;
+        }
+
+        var alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete account");
+        alert.setHeaderText("Delete account");
+        alert.setContentText("Are you sure?");
+        alert.showAndWait().ifPresent(buttonType -> {
+            if (buttonType != ButtonType.OK) {
+                return;
+            }
+            service.delete(account.id());
+            observableAccountsList.remove(account);
+        });
     }
 }
