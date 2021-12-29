@@ -1,15 +1,15 @@
 package xyz.stasiak.cashfx.account;
 
-import io.vavr.collection.List;
-import io.vavr.control.Option;
+import java.util.List;
+import java.util.Optional;
 
 interface AccountRepository {
 
     Account save(Account account);
 
-    Option<Account> getById(int id);
+    Optional<Account> getById(int id);
 
-    Option<AccountReadModel> getReadModelById(int id);
+    Optional<AccountReadModel> getReadModelById(int id);
 
     List<AccountReadModel> getReadModelsByUserId(int userId);
 

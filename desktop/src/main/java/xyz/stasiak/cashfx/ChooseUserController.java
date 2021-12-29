@@ -33,7 +33,7 @@ public class ChooseUserController {
 
     @FXML
     void initialize() {
-        observableUserList.addAll(service.getAllUsers().toJavaList());
+        observableUserList.addAll(service.getAllUsers());
         userList.setItems(observableUserList);
         userList.setCellFactory(listView -> new ListCell<>() {
             @Override

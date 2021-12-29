@@ -1,16 +1,16 @@
 package xyz.stasiak.cashfx.user;
 
-import io.vavr.collection.List;
-import io.vavr.control.Option;
+import java.util.List;
+import java.util.Optional;
 
-interface UserRepository {
+public interface UserRepository {
 
     List<UserReadModel> getAll();
 
-    Option<UserReadModel> getById(int id);
+    Optional<UserReadModel> getById(int id);
 
     User save(User user);
 
-    Option<User> getEntityById(int id);
+    Optional<User> getEntityById(int id);
 
 }

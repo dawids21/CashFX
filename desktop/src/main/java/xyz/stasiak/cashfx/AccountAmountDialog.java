@@ -1,7 +1,5 @@
 package xyz.stasiak.cashfx;
 
-import io.vavr.Tuple;
-import io.vavr.Tuple2;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -9,12 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.stage.Modality;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-public class AccountAmountDialog extends Dialog<Tuple2<AccountAmountDialog.UserAccountData, Integer>> {
+public class AccountAmountDialog extends Dialog<Pair<AccountAmountDialog.UserAccountData, Integer>> {
 
     @FXML
     private ChoiceBox<UserAccountData> account;
@@ -43,7 +42,7 @@ public class AccountAmountDialog extends Dialog<Tuple2<AccountAmountDialog.UserA
                 return null;
             }
 
-            return Tuple.of(account.getValue(), Integer.parseInt(amount.getText()));
+            return new Pair<>(account.getValue(), Integer.parseInt(amount.getText()));
         });
 
         setOnShowing(dialogEvent -> Platform.runLater(() -> amount.requestFocus()));

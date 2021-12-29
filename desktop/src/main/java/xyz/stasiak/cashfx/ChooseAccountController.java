@@ -39,7 +39,7 @@ public class ChooseAccountController {
     @FXML
     void initialize() {
         var userId = applicationState.getUserId();
-        var observableList = FXCollections.observableArrayList(service.getUserAccounts(userId).toJavaList());
+        var observableList = FXCollections.observableArrayList(service.getUserAccounts(userId));
         accountsTable.setItems(observableList);
         nameTableColumn.setCellValueFactory(cellDataFeatures -> new SimpleStringProperty(cellDataFeatures.getValue().name()));
         moneyTableColumn.setCellValueFactory(cellDataFeatures -> new SimpleStringProperty(String.format("%d", cellDataFeatures.getValue().money())));

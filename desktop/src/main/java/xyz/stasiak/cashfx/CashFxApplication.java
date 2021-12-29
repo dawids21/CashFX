@@ -1,6 +1,5 @@
 package xyz.stasiak.cashfx;
 
-import io.vavr.collection.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -12,6 +11,7 @@ import xyz.stasiak.cashfx.user.UserApplicationService;
 import xyz.stasiak.cashfx.user.UserConfig;
 
 import java.io.IOException;
+import java.util.List;
 
 public class CashFxApplication extends Application {
     public static void main(String[] args) {

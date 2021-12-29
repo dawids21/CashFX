@@ -1,8 +1,7 @@
 package xyz.stasiak.cashfx.context;
 
-import io.vavr.collection.List;
-
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public enum ApplicationContext {

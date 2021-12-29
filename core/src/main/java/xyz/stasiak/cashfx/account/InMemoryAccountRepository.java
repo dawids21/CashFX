@@ -1,13 +1,13 @@
 package xyz.stasiak.cashfx.account;
 
-import io.vavr.collection.HashMap;
-import io.vavr.collection.List;
-import io.vavr.collection.Map;
-import io.vavr.control.Option;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 class InMemoryAccountRepository implements AccountRepository {
 
-    private Map<Integer, Account> accounts = HashMap.empty();
+    private final Map<Integer, Account> accounts = new HashMap<>();
     private int nextId = 1;
 
     @Override
@@ -18,25 +18,26 @@ class InMemoryAccountRepository implements AccountRepository {
             return account;
         }
         account.setId(nextId);
-        accounts = accounts.put(nextId, account);
+        accounts.put(nextId, account);
         nextId += 1;
         return account;
 
     }
 
     @Override
-    public Option<Account> getById(int id) {
-        return accounts.get(id);
+    public Optional<Account> getById(int id) {
+        return Optional.ofNullable(accounts.get(id));
     }
 
     @Override
-    public Option<AccountReadModel> getReadModelById(int id) {
-        return accounts.get(id).map(Account::toReadModel);
+    public Optional<AccountReadModel> getReadModelById(int id) {
+        return Optional.ofNullable(accounts.get(id)).map(Account::toReadModel);
     }
 
     @Override
     public List<AccountReadModel> getReadModelsByUserId(int userId) {
         return accounts.values()
+                .stream()
                 .map(Account::toReadModel)
                 .filter(account -> account.userId() == userId)
                 .toList();
@@ -45,6 +46,7 @@ class InMemoryAccountRepository implements AccountRepository {
     @Override
     public List<AccountNameReadModel> getNameReadModels() {
         return accounts.values()
+                .stream()
                 .map(Account::toNameReadModel)
                 .toList();
     }

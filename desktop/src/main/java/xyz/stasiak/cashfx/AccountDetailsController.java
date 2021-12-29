@@ -1,6 +1,5 @@
 package xyz.stasiak.cashfx;
 
-import io.vavr.Tuple;
 import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,8 +15,11 @@ import xyz.stasiak.cashfx.account.AccountApplicationService;
 import xyz.stasiak.cashfx.account.exceptions.NotEnoughMoney;
 import xyz.stasiak.cashfx.context.ApplicationContext;
 import xyz.stasiak.cashfx.user.UserApplicationService;
+import xyz.stasiak.cashfx.user.UserReadModel;
 
 import java.io.IOException;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class AccountDetailsController {
 
@@ -86,18 +88,19 @@ public class AccountDetailsController {
 
     @FXML
     void onTransferButtonAction() throws IOException {
-        var usernames = userApplicationService.getAllUsers().toMap(user -> Tuple.of(user.id(), user.name()));
+        var usernames = userApplicationService.getAllUsers().stream().collect(Collectors.toMap(UserReadModel::id, UserReadModel::name));
         var accountNameReadModels = accountApplicationService.readAccountNames()
+                .stream()
                 .filter(account -> account.id() != applicationState.getAccountId())
-                .map(account -> new AccountAmountDialog.UserAccountData(account.id(), account.name(), usernames.get(account.userId()).getOrElse("")))
-                .toJavaList();
+                .map(account -> new AccountAmountDialog.UserAccountData(account.id(), account.name(), Optional.ofNullable(usernames.get(account.userId())).orElse("")))
+                .collect(Collectors.toList());
         var dialog = new AccountAmountDialog();
         dialog.setTitle("Transfer");
         dialog.setHeaderText("Transfer money");
         dialog.setAccounts(accountNameReadModels);
-        dialog.showAndWait().ifPresent(tuple -> {
-            var accountId = tuple._1.accountId();
-            var amount = tuple._2;
+        dialog.showAndWait().ifPresent(pair -> {
+            var accountId = pair.getKey().accountId();
+            var amount = pair.getValue();
             try {
                 accountApplicationService.makeTransfer(applicationState.getAccountId(), accountId, amount);
             } catch (NotEnoughMoney notEnoughMoney) {
