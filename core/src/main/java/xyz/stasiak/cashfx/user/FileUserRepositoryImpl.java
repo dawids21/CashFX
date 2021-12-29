@@ -1,31 +1,32 @@
 package xyz.stasiak.cashfx.user;
 
-import io.vavr.collection.HashMap;
-import io.vavr.collection.List;
-import io.vavr.collection.Map;
-import io.vavr.control.Option;
-
 import java.io.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 class FileUserRepositoryImpl implements FileUserRepository {
 
     private static final String FILENAME = "users.dat";
 
-    private Map<Integer, User> users = HashMap.empty();
+    private final Map<Integer, User> users = new HashMap<>();
     private int nextId = 1;
 
     public FileUserRepositoryImpl() {
-        var file = new File(getJarLocation() + "/" + FILENAME);
-        if (!file.exists()) {
+        var file = new File(FILENAME);
+        if (file.exists()) {
             try {
                 var fileIn = new FileInputStream(file);
                 var objectIn = new ObjectInputStream(fileIn);
-                var users = objectIn.readObject();
-                var nextId = objectIn.readObject();
-                if (users instanceof Map<?, ?> && nextId instanceof Integer) {
-                    this.users = (Map<Integer, User>) users;
-                    this.nextId = (int) nextId;
+                var numOfUsers = (int) objectIn.readObject();
+                for (int i = 0; i < numOfUsers; i++) {
+                    var user = objectIn.readObject();
+                    if (user instanceof User) {
+                        users.put(((User) user).toReadModel().id(), (User) user);
+                    }
                 }
+                nextId = (int) objectIn.readObject();
             } catch (Exception e) {
                 System.out.println("Can't load from file");
             }
@@ -36,40 +37,39 @@ class FileUserRepositoryImpl implements FileUserRepository {
     public User save(User user) {
 
         user.setId(nextId);
-        users = users.put(nextId, user);
+        users.put(nextId, user);
         nextId += 1;
         return user;
-
     }
 
     @Override
-    public Option<UserReadModel> getById(int id) {
-        return users.get(id).map(User::toReadModel);
+    public Optional<UserReadModel> getById(int id) {
+        return Optional.ofNullable(users.get(id)).map(User::toReadModel);
     }
 
     @Override
     public List<UserReadModel> getAll() {
-        return users.values().map(User::toReadModel).toList();
+        return users.values().stream().map(User::toReadModel).toList();
     }
 
     @Override
-    public Option<User> getEntityById(int id) {
-        return users.get(id);
+    public Optional<User> getEntityById(int id) {
+        return Optional.ofNullable(users.get(id));
     }
 
     @Override
     public void persist() throws IOException {
-        var file = new File(getJarLocation() + "/" + FILENAME);
-        if (!file.exists()) {
-            file.createNewFile();
+        var file = new File(FILENAME);
+        if (file.exists()) {
+            file.delete();
         }
+        file.createNewFile();
         var fileOut = new FileOutputStream(file);
         var objectOut = new ObjectOutputStream(fileOut);
-        objectOut.writeObject(users);
+        objectOut.writeObject(users.size());
+        for (User user : users.values()) {
+            objectOut.writeObject(user);
+        }
         objectOut.writeObject(nextId);
-    }
-
-    private String getJarLocation() {
-        return getClass().getProtectionDomain().getCodeSource().getLocation().toString();
     }
 }
