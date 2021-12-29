@@ -9,8 +9,8 @@ class User implements Serializable {
     @Serial
     private static final long serialVersionUID = 3163814756576176644L;
 
-    private final String name;
-    private final String password;
+    private String name;
+    private String password;
     private Integer id;
 
     private User(Integer id, String name, String password) {
@@ -31,7 +31,15 @@ class User implements Serializable {
         this.id = id;
     }
 
-    boolean isPasswordEqual(String password) {
+    void rename(String name) {
+        this.name = name;
+    }
+
+    void changePassword(String password) {
+        this.password = password;
+    }
+
+    boolean isPasswordCorrect(String password) {
         return Objects.nonNull(password) && password.equals(this.password);
     }
 

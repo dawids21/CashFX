@@ -32,7 +32,7 @@ public class UserApplicationService {
 
         var user = repository.getEntityById(userId).orElseThrow(() -> new UserNotFound(userId));
 
-        if (!user.isPasswordEqual(password)) {
+        if (!user.isPasswordCorrect(password)) {
             throw new UserPasswordIncorrect(user.toReadModel().name());
         }
 
@@ -41,7 +41,7 @@ public class UserApplicationService {
     public void delete(int userId, String password) {
         var user = repository.getEntityById(userId).orElseThrow(() -> new UserNotFound(userId));
 
-        if (!user.isPasswordEqual(password)) {
+        if (!user.isPasswordCorrect(password)) {
             throw new UserPasswordIncorrect(user.toReadModel().name());
         }
 
@@ -50,5 +50,11 @@ public class UserApplicationService {
         if (!result) {
             throw new UserNotFound(userId);
         }
+    }
+
+    public void rename(int userId, String newName) {
+        var user = repository.getEntityById(userId).orElseThrow(() -> new UserNotFound(userId));
+        user.rename(newName);
+        repository.save(user);
     }
 }

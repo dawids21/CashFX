@@ -7,9 +7,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import xyz.stasiak.cashfx.account.AccountApplicationService;
 import xyz.stasiak.cashfx.context.ApplicationContext;
@@ -93,7 +91,27 @@ public class ChooseUserController {
     }
 
     @FXML
-    void onModifyButtonAction() {
+    void onRenameButtonAction() {
+        var user = userList.getSelectionModel().getSelectedItem();
+
+        var dialog = new TextInputDialog(user.name());
+        dialog.setTitle("Rename user");
+        dialog.setHeaderText("Rename user");
+        dialog.setContentText("Name:");
+        dialog.getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+            if ("".equals(dialog.getEditor().getText())) {
+                event.consume();
+            }
+        });
+        dialog.showAndWait().ifPresent(name -> {
+            userApplicationService.rename(user.id(), name);
+            observableUserList.remove(user);
+            observableUserList.add(userApplicationService.getById(user.id()));
+        });
+    }
+
+    @FXML
+    void onChangePasswordButtonAction() {
 
     }
 
