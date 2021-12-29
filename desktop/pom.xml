@@ -51,7 +51,7 @@
                             <noManPages>true</noManPages>
                             <launcher>cashfx</launcher>
                             <jlinkImageName>cashfx</jlinkImageName>
-                            <jlinkZipName>cashfxzip</jlinkZipName>
+                            <jlinkZipName>cashfx</jlinkZipName>
                             <mainClass>xyz.stasiak.cashfxdesktop/xyz.stasiak.cashfx.CashFxApplication</mainClass>
                         </configuration>
                     </execution>
