@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import xyz.stasiak.cashfx.account.AccountApplicationService;
 import xyz.stasiak.cashfx.account.AccountReadModel;
@@ -101,6 +98,22 @@ public class ChooseAccountController {
     @FXML
     void onModifyButtonAction() {
 
+        var account = accountsTable.getSelectionModel().getSelectedItem();
+
+        var dialog = new TextInputDialog(account.name());
+        dialog.setTitle("Modify account");
+        dialog.setHeaderText("Rename account");
+        dialog.setContentText("Name:");
+        dialog.getDialogPane().lookupButton(ButtonType.OK).addEventFilter(ActionEvent.ACTION, event -> {
+            if ("".equals(dialog.getEditor().getText())) {
+                event.consume();
+            }
+        });
+        dialog.showAndWait().ifPresent(name -> {
+            service.renameAccount(account.id(), name);
+            observableAccountsList.remove(account);
+            observableAccountsList.add(service.readAccount(account.id()));
+        });
     }
 
     @FXML

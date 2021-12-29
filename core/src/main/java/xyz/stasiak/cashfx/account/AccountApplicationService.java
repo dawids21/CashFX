@@ -110,4 +110,10 @@ public class AccountApplicationService {
             repository.delete(account.id());
         }
     }
+
+    public void renameAccount(int accountId, String newName) {
+        var account = repository.getById(accountId).orElseThrow(() -> new AccountNotFound(accountId));
+        account.setName(newName);
+        repository.save(account);
+    }
 }

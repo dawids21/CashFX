@@ -9,10 +9,9 @@ class Account implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 9031314553309478600L;
-
-    private final String name;
     private final AccountType type;
     private final Integer userId;
+    private String name;
     private Integer id;
     private int money;
     private int charge;
@@ -32,6 +31,10 @@ class Account implements Serializable {
 
     void setId(Integer id) {
         this.id = id;
+    }
+
+    void setName(String name) {
+        this.name = name;
     }
 
     void makeTransfer(int amount, Account to) {
