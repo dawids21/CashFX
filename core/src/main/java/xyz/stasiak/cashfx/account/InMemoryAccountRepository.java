@@ -50,4 +50,13 @@ class InMemoryAccountRepository implements AccountRepository {
                 .map(Account::toNameReadModel)
                 .toList();
     }
+
+    @Override
+    public boolean delete(int id) {
+        if (!accounts.containsKey(id)) {
+            return false;
+        }
+        accounts.remove(id);
+        return true;
+    }
 }

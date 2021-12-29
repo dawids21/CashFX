@@ -95,4 +95,19 @@ public class AccountApplicationService {
     private Account getAccount(int accountId) {
         return repository.getById(accountId).orElseThrow(() -> new AccountNotFound(accountId));
     }
+
+    public void delete(int accountId) {
+        var result = repository.delete(accountId);
+
+        if (!result) {
+            throw new AccountNotFound(accountId);
+        }
+    }
+
+    public void deleteForUser(int userId) {
+        var accounts = repository.getReadModelsByUserId(userId);
+        for (var account : accounts) {
+            repository.delete(account.id());
+        }
+    }
 }

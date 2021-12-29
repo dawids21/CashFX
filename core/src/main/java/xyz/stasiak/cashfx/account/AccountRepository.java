@@ -15,4 +15,6 @@ public interface AccountRepository {
 
     List<AccountNameReadModel> getNameReadModels();
 
+    boolean delete(int id);
+
 }

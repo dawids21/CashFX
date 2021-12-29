@@ -74,6 +74,15 @@ class FileAccountRepositoryImpl implements FileAccountRepository {
     }
 
     @Override
+    public boolean delete(int id) {
+        if (!accounts.containsKey(id)) {
+            return false;
+        }
+        accounts.remove(id);
+        return true;
+    }
+
+    @Override
     public void persist() throws IOException {
         var file = new File(FILENAME);
         if (file.exists()) {
