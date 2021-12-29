@@ -69,7 +69,7 @@ public class ChooseUserController {
                 applicationState.setUserId(userId);
                 var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
-                var scene = new Scene(fxmlLoader.load(), 600, 400);
+                var scene = new Scene(fxmlLoader.load());
                 stage.setScene(scene);
             } catch (UserPasswordIncorrect passwordIncorrect) {
                 var alert = new Alert(Alert.AlertType.WARNING);

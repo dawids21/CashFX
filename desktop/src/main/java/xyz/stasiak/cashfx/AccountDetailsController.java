@@ -62,7 +62,7 @@ public class AccountDetailsController {
             applicationState.setUserId(null);
             var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             var fxmlLoader = new FXMLLoader(getClass().getResource("choose-user-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
         }
     }
@@ -81,7 +81,7 @@ public class AccountDetailsController {
             applicationState.setAccountId(null);
             var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
         }
     }
