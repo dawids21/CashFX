@@ -93,6 +93,9 @@ public class ChooseUserController {
     @FXML
     void onRenameButtonAction() {
         var user = userList.getSelectionModel().getSelectedItem();
+        if (user == null) {
+            return;
+        }
 
         var dialog = new TextInputDialog(user.name());
         dialog.setTitle("Rename user");
@@ -111,8 +114,31 @@ public class ChooseUserController {
     }
 
     @FXML
-    void onChangePasswordButtonAction() {
-
+    void onChangePasswordButtonAction() throws IOException {
+        var user = userList.getSelectionModel().getSelectedItem();
+        if (user == null) {
+            return;
+        }
+        var dialog = new ChangePasswordDialog();
+        var passwords = dialog.showAndWait();
+        if (passwords.isPresent()) {
+            try {
+                userApplicationService.changePassword(user.id(), passwords.get().getKey(), passwords.get().getValue());
+                observableUserList.remove(user);
+                observableUserList.add(userApplicationService.getById(user.id()));
+                var alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Change password");
+                alert.setHeaderText("Change password");
+                alert.setContentText("Password has been changed!");
+                alert.show();
+            } catch (UserPasswordIncorrect passwordIncorrect) {
+                var alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Change password");
+                alert.setHeaderText("Invalid password");
+                alert.setContentText(passwordIncorrect.getMessage());
+                alert.show();
+            }
+        }
     }
 
     @FXML

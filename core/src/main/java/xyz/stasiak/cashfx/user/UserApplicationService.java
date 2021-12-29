@@ -57,4 +57,15 @@ public class UserApplicationService {
         user.rename(newName);
         repository.save(user);
     }
+
+    public void changePassword(int userId, String oldPassword, String newPassword) {
+        var user = repository.getEntityById(userId).orElseThrow(() -> new UserNotFound(userId));
+
+        if (!user.isPasswordCorrect(oldPassword)) {
+            throw new UserPasswordIncorrect(user.toReadModel().name());
+        }
+
+        user.changePassword(newPassword);
+        repository.save(user);
+    }
 }

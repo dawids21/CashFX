@@ -99,6 +99,9 @@ public class ChooseAccountController {
     void onModifyButtonAction() {
 
         var account = accountsTable.getSelectionModel().getSelectedItem();
+        if (account == null) {
+            return;
+        }
 
         var dialog = new TextInputDialog(account.name());
         dialog.setTitle("Modify account");
