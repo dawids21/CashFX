@@ -45,7 +45,7 @@ public class CreateUserDialog extends Dialog<CreateUserDialog.NewUserData> {
                 event.consume();
             }
         });
-        setOnShowing(dialogEvent -> Platform.runLater(() -> passwordField.requestFocus()));
+        setOnShowing(dialogEvent -> Platform.runLater(() -> nameField.requestFocus()));
     }
 
     private boolean isValid() {
