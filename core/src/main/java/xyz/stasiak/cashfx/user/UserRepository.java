@@ -13,4 +13,5 @@ public interface UserRepository {
 
     Optional<User> getEntityById(int id);
 
+    boolean delete(int id);
 }

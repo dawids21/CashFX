@@ -37,4 +37,12 @@ public class UserApplicationService {
         }
 
     }
+
+    public void delete(int userId) {
+        var result = repository.delete(userId);
+
+        if (!result) {
+            throw new UserNotFound(userId);
+        }
+    }
 }

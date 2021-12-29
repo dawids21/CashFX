@@ -33,4 +33,13 @@ class InMemoryUserRepository implements UserRepository {
     public Optional<User> getEntityById(int id) {
         return Optional.ofNullable(users.get(id));
     }
+
+    @Override
+    public boolean delete(int id) {
+        if (!users.containsKey(id)) {
+            return false;
+        }
+        users.remove(id);
+        return true;
+    }
 }

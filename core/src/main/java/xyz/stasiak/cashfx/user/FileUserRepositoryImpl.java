@@ -61,6 +61,15 @@ class FileUserRepositoryImpl implements FileUserRepository {
     }
 
     @Override
+    public boolean delete(int id) {
+        if (!users.containsKey(id)) {
+            return false;
+        }
+        users.remove(id);
+        return true;
+    }
+
+    @Override
     public void persist() throws IOException {
         var file = new File(FILENAME);
         if (file.exists()) {
