@@ -26,7 +26,7 @@ public class CashFxApplication extends Application {
                 new AccountConfig(), new UserConfig(), new ApplicationConfig()
         ));
         FXMLLoader fxmlLoader = new FXMLLoader(CashFxApplication.class.getResource("choose-user-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
         stage.setTitle("CashFX");
         stage.setScene(scene);
         stage.show();

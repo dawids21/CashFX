@@ -2,6 +2,7 @@ package xyz.stasiak.cashfx;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,7 +22,7 @@ import java.io.IOException;
 public class ChooseAccountController {
     private final AccountApplicationService service;
     private final ApplicationState applicationState;
-
+    private final ObservableList<AccountReadModel> observableAccountsList = FXCollections.observableArrayList();
     @FXML
     private TableView<AccountReadModel> accountsTable;
     @FXML
@@ -39,15 +40,15 @@ public class ChooseAccountController {
     @FXML
     void initialize() {
         var userId = applicationState.getUserId();
-        var observableList = FXCollections.observableArrayList(service.getUserAccounts(userId));
-        accountsTable.setItems(observableList);
+        observableAccountsList.addAll(service.getUserAccounts(userId));
+        accountsTable.setItems(observableAccountsList);
         nameTableColumn.setCellValueFactory(cellDataFeatures -> new SimpleStringProperty(cellDataFeatures.getValue().name()));
         moneyTableColumn.setCellValueFactory(cellDataFeatures -> new SimpleStringProperty(String.format("%d", cellDataFeatures.getValue().money())));
         typeTableColumn.setCellValueFactory(cellDataFeatures -> new SimpleStringProperty(cellDataFeatures.getValue().type().name()));
     }
 
     @FXML
-    void onChooseAccountButtonAction(ActionEvent event) throws IOException {
+    void onOpenButtonAction(ActionEvent event) throws IOException {
         if (accountsTable.getSelectionModel().getSelectedItem() == null) {
             return;
         }
@@ -75,8 +76,35 @@ public class ChooseAccountController {
             applicationState.setUserId(null);
             var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             var fxmlLoader = new FXMLLoader(getClass().getResource("choose-user-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+            Scene scene = new Scene(fxmlLoader.load(), 600, 400);
             stage.setScene(scene);
         }
+    }
+
+    @FXML
+    void onCreateButtonAction() throws IOException {
+        var dialog = new CreateAccountDialog();
+        dialog.setTitle("Create account");
+        var newAccount = dialog.showAndWait();
+        if (newAccount.isPresent()) {
+            var accountId = switch (newAccount.get().accountTypeReadModel()) {
+                case BASIC -> service.openBasic(applicationState.getUserId(), newAccount.get().name());
+                case BRONZE -> service.openBronze(applicationState.getUserId(), newAccount.get().name());
+                case SILVER -> service.openSilver(applicationState.getUserId(), newAccount.get().name());
+                case GOLD -> service.openGold(applicationState.getUserId(), newAccount.get().name());
+                case DIAMOND -> service.openDiamond(applicationState.getUserId(), newAccount.get().name());
+            };
+            observableAccountsList.add(service.readAccount(accountId));
+        }
+    }
+
+    @FXML
+    void onModifyButtonAction() {
+
+    }
+
+    @FXML
+    void onDeleteButtonAction() {
+
     }
 }
