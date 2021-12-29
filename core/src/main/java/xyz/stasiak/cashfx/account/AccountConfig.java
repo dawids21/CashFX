@@ -7,7 +7,7 @@ public class AccountConfig implements ContextConfiguration {
 
     @Override
     public void apply(ApplicationContext context) {
-        context.register(AccountRepository.class, new InMemoryAccountRepository());
+        context.register(AccountRepository.class, new FileAccountRepositoryImpl());
         context.register(AccountFactory.class, new AccountFactory());
 
         var accountRepository = context.getBean(AccountRepository.class);

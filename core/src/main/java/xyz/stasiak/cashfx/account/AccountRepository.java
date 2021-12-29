@@ -3,7 +3,7 @@ package xyz.stasiak.cashfx.account;
 import java.util.List;
 import java.util.Optional;
 
-interface AccountRepository {
+public interface AccountRepository {
 
     Account save(Account account);
 

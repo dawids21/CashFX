@@ -23,6 +23,10 @@ class User implements Serializable {
         return new User(null, name, password);
     }
 
+    Integer getId() {
+        return id;
+    }
+
     void setId(Integer id) {
         this.id = id;
     }

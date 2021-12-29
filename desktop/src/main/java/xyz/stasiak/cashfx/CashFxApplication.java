@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import xyz.stasiak.cashfx.account.AccountConfig;
+import xyz.stasiak.cashfx.account.AccountRepository;
+import xyz.stasiak.cashfx.account.FileAccountRepository;
 import xyz.stasiak.cashfx.context.ApplicationContext;
 import xyz.stasiak.cashfx.user.FileUserRepository;
 import xyz.stasiak.cashfx.user.UserConfig;
@@ -35,6 +37,11 @@ public class CashFxApplication extends Application {
         var userRepository = ApplicationContext.CONTEXT.getBean(UserRepository.class);
         if (userRepository instanceof FileUserRepository) {
             ((FileUserRepository) userRepository).persist();
+        }
+
+        var accountRepository = ApplicationContext.CONTEXT.getBean(AccountRepository.class);
+        if (accountRepository instanceof FileAccountRepository) {
+            ((FileAccountRepository) accountRepository).persist();
         }
     }
 }

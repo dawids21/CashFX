@@ -23,7 +23,7 @@ class FileUserRepositoryImpl implements FileUserRepository {
                 for (int i = 0; i < numOfUsers; i++) {
                     var user = objectIn.readObject();
                     if (user instanceof User) {
-                        users.put(((User) user).toReadModel().id(), (User) user);
+                        users.put(((User) user).getId(), (User) user);
                     }
                 }
                 nextId = (int) objectIn.readObject();
@@ -35,7 +35,10 @@ class FileUserRepositoryImpl implements FileUserRepository {
 
     @Override
     public User save(User user) {
-
+        if (user.getId() != null) {
+            users.put(user.getId(), user);
+            return user;
+        }
         user.setId(nextId);
         users.put(nextId, user);
         nextId += 1;
@@ -67,7 +70,7 @@ class FileUserRepositoryImpl implements FileUserRepository {
         var fileOut = new FileOutputStream(file);
         var objectOut = new ObjectOutputStream(fileOut);
         objectOut.writeObject(users.size());
-        for (User user : users.values()) {
+        for (var user : users.values()) {
             objectOut.writeObject(user);
         }
         objectOut.writeObject(nextId);
