@@ -66,7 +66,7 @@ public class ChooseUserController {
                 applicationState.setUserId(userId);
                 var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
-                var scene = new Scene(fxmlLoader.load(), 320, 240);
+                var scene = new Scene(fxmlLoader.load(), 600, 400);
                 stage.setScene(scene);
             } catch (UserPasswordIncorrect passwordIncorrect) {
                 var alert = new Alert(Alert.AlertType.WARNING);
@@ -79,7 +79,7 @@ public class ChooseUserController {
     }
 
     @FXML
-    void onCreateUserButtonAction() throws IOException {
+    void onCreateButtonAction() throws IOException {
         var dialog = new CreateUserDialog();
         dialog.setTitle("Create user");
         var newUser = dialog.showAndWait();
@@ -87,5 +87,15 @@ public class ChooseUserController {
             var userId = service.create(newUser.get().name(), newUser.get().password());
             observableUserList.add(service.getById(userId));
         }
+    }
+
+    @FXML
+    void onModifyButtonAction() {
+
+    }
+
+    @FXML
+    void onDeleteButtonAction() {
+
     }
 }
