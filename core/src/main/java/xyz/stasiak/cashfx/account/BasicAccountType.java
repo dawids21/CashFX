@@ -1,6 +1,12 @@
 package xyz.stasiak.cashfx.account;
 
-class BasicAccountType implements AccountType {
+import java.io.Serial;
+import java.io.Serializable;
+
+class BasicAccountType implements AccountType, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 577679776278916116L;
 
     @Override
     public AccountTypeReadModel toReadModel() {

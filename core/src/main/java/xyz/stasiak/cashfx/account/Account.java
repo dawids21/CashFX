@@ -2,7 +2,14 @@ package xyz.stasiak.cashfx.account;
 
 import xyz.stasiak.cashfx.account.exceptions.NotEnoughMoney;
 
-class Account {
+import java.io.Serial;
+import java.io.Serializable;
+
+class Account implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 9031314553309478600L;
+
     private final String name;
     private final AccountType type;
     private final Integer userId;

@@ -1,6 +1,12 @@
 package xyz.stasiak.cashfx.account;
 
-class DiamondAccountType implements AccountType {
+import java.io.Serial;
+import java.io.Serializable;
+
+class DiamondAccountType implements AccountType, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2431971992839555488L;
 
     @Override
     public AccountTypeReadModel toReadModel() {

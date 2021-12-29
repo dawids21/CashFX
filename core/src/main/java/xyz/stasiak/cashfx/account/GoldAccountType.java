@@ -1,6 +1,12 @@
 package xyz.stasiak.cashfx.account;
 
-class GoldAccountType implements AccountType {
+import java.io.Serial;
+import java.io.Serializable;
+
+class GoldAccountType implements AccountType, Serializable {
+
+    @Serial
+    private static final long serialVersionUID = -4845465278445769820L;
 
     @Override
     public AccountTypeReadModel toReadModel() {
