@@ -7,7 +7,7 @@ public class UserConfig implements ContextConfiguration {
 
     @Override
     public void apply(ApplicationContext context) {
-        context.register(UserRepository.class, new InMemoryUserRepository());
+        context.register(UserRepository.class, new FileUserRepositoryImpl());
 
         var repository = context.getBean(UserRepository.class);
 

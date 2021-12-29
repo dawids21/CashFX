@@ -1,8 +1,14 @@
 package xyz.stasiak.cashfx.user;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
-class User {
+class User implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3163814756576176644L;
+
     private final String name;
     private final String password;
     private Integer id;
