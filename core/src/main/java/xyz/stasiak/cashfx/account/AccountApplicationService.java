@@ -116,4 +116,9 @@ public class AccountApplicationService {
         account.setName(newName);
         repository.save(account);
     }
+
+    public boolean checkIfHasMoneyOnAccounts(int userId) {
+        var accounts = repository.getReadModelsByUserId(userId);
+        return accounts.stream().anyMatch(account -> account.money() > 0 || account.charge() > 0);
+    }
 }

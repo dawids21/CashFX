@@ -38,7 +38,13 @@ public class UserApplicationService {
 
     }
 
-    public void delete(int userId) {
+    public void delete(int userId, String password) {
+        var user = repository.getEntityById(userId).orElseThrow(() -> new UserNotFound(userId));
+
+        if (!user.isPasswordEqual(password)) {
+            throw new UserPasswordIncorrect(user.toReadModel().name());
+        }
+
         var result = repository.delete(userId);
 
         if (!result) {

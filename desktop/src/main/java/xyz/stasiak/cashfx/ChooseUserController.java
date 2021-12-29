@@ -11,6 +11,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
+import xyz.stasiak.cashfx.account.AccountApplicationService;
 import xyz.stasiak.cashfx.context.ApplicationContext;
 import xyz.stasiak.cashfx.user.UserApplicationService;
 import xyz.stasiak.cashfx.user.UserReadModel;
@@ -20,20 +21,22 @@ import java.io.IOException;
 
 public class ChooseUserController {
 
-    private final UserApplicationService service;
+    private final UserApplicationService userApplicationService;
+    private final AccountApplicationService accountApplicationService;
     private final ApplicationState applicationState;
     private final ObservableList<UserReadModel> observableUserList = FXCollections.observableArrayList();
     @FXML
     private ListView<UserReadModel> userList;
 
     public ChooseUserController() {
-        service = ApplicationContext.CONTEXT.getBean(UserApplicationService.class);
+        userApplicationService = ApplicationContext.CONTEXT.getBean(UserApplicationService.class);
+        accountApplicationService = ApplicationContext.CONTEXT.getBean(AccountApplicationService.class);
         applicationState = ApplicationContext.CONTEXT.getBean(ApplicationState.class);
     }
 
     @FXML
     void initialize() {
-        observableUserList.addAll(service.getAllUsers());
+        observableUserList.addAll(userApplicationService.getAllUsers());
         userList.setItems(observableUserList);
         userList.setCellFactory(listView -> new ListCell<>() {
             @Override
@@ -62,7 +65,7 @@ public class ChooseUserController {
         var password = dialog.showAndWait();
         if (password.isPresent()) {
             try {
-                service.login(userId, password.get());
+                userApplicationService.login(userId, password.get());
                 applicationState.setUserId(userId);
                 var stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 var fxmlLoader = new FXMLLoader(getClass().getResource("choose-account-view.fxml"));
@@ -84,8 +87,8 @@ public class ChooseUserController {
         dialog.setTitle("Create user");
         var newUser = dialog.showAndWait();
         if (newUser.isPresent()) {
-            var userId = service.create(newUser.get().name(), newUser.get().password());
-            observableUserList.add(service.getById(userId));
+            var userId = userApplicationService.create(newUser.get().name(), newUser.get().password());
+            observableUserList.add(userApplicationService.getById(userId));
         }
     }
 
@@ -95,7 +98,36 @@ public class ChooseUserController {
     }
 
     @FXML
-    void onDeleteButtonAction() {
-
+    void onDeleteButtonAction() throws IOException {
+        if (userList.getSelectionModel().getSelectedItem() == null) {
+            return;
+        }
+        var user = userList.getSelectionModel().getSelectedItem();
+        if (accountApplicationService.checkIfHasMoneyOnAccounts(user.id())) {
+            var alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Delete user");
+            alert.setHeaderText("Delete user");
+            alert.setContentText("Some accounts have some money or charges. Deletion is not possible!");
+            alert.show();
+            return;
+        }
+        var dialog = new PasswordInputDialog();
+        dialog.setTitle("Delete account");
+        dialog.setHeaderText("Write password to delete account");
+        dialog.setContentText("Password: ");
+        var password = dialog.showAndWait();
+        if (password.isPresent()) {
+            try {
+                userApplicationService.delete(user.id(), password.get());
+                accountApplicationService.deleteForUser(user.id());
+                observableUserList.remove(user);
+            } catch (UserPasswordIncorrect passwordIncorrect) {
+                var alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Delete account");
+                alert.setHeaderText("Invalid password");
+                alert.setContentText(passwordIncorrect.getMessage());
+                alert.show();
+            }
+        }
     }
 }
