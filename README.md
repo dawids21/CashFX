@@ -12,9 +12,10 @@ There are two option to start this application:
 
 ### Precompiled image
 Download the version compatible with your OS (Windows or Linux available), unzip it and run `cashfx` or `cashfx.bat` file in the `bin` folder.
-You don't have to have Java or Maven on your computer.
+You don't need to have Java or Maven on your computer.
 
 ### Maven
+For this method you must have Java 17 and Maven installed on your computer.
 1. Open terminal in project directory
 2. Run `./mvnw clean install` (Linux/MacOS) or `/mvnw.cmd clean install` (Windows)
 3. Run `./mvnw -f desktop/pom.xml javafx:run` (Linux/MacOS) or `/mvnw.cmd -f desktop/pom.xml javafx:run` (Windows)
